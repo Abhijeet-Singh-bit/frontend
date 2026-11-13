@@ -40,20 +40,20 @@ const Signup = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!validate()) return;
+  if (!validate()) return;
 
-    try {
-      setLoading(true);
-      let API_URL = import.meta.env.VITE_API_URL;
-      const response = await axios.post("${API_URL}/api/signup",
-        {
-          email,
-          password,
-          usertype,
-        }
-      );
+  try {
+    setLoading(true);
+
+  
+
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/signup`, {
+      email,
+      password,
+      usertype,
+    });
 
       alert(response.data.message || "Signup Successful!");
 

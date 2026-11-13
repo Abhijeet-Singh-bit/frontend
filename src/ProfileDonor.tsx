@@ -71,13 +71,14 @@ const DonorForm = () => {
   };
 
 // ================================================================================================//
- const save = async () => {
-    
+ 
+const save = async () => {
   if (!validate()) return;
-  let API_URL = import.meta.env.VITE_API_URL;
-  let url = '${API_URL}/api/profile';
+
+  const url = `${import.meta.env.VITE_API_URL}/api/profile`;
 
   const fd = new FormData();
+
   if (obj.email) fd.append("email", obj.email);
   if (obj.name) fd.append("name", obj.name);
   if (obj.contact) fd.append("contact", obj.contact);
@@ -90,30 +91,19 @@ const DonorForm = () => {
   const token = localStorage.getItem("token");
 
   try {
-    const resp = await axios.post(
-      url,
-      fd,
-      {
-        headers: {
-          Authorization: `Bearer ${token}` 
-        }
+    const resp = await axios.post(url, fd, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    );
+    });
 
-    if (resp.data.status === true) {
-      alert(resp.data.msg);
-    } else {
-      alert(resp.data.msg);
-    }
+    alert(resp.data.msg);
 
   } catch (err: any) {
-    //  TOKEN EXPIRED HANDLING
     if (err.response && err.response.status === 401) {
       alert("Your session has expired. Please login again.");
       localStorage.removeItem("token");
-    
       navigate("/loginnav");
-
     } else {
       alert("Something went wrong. Try again.");
     }
@@ -121,56 +111,52 @@ const DonorForm = () => {
 };
 
 
-    const update = async () => { 
-    // alert("Clicked");
-    let API_URL = import.meta.env.VITE_API_URL;
-    let url = '${API_URL}/api/update';
 
-    const fdu = new FormData();
-    if (obj.email) fdu.append("email", obj.email);
-    if (obj.contact) fdu.append("contact", obj.contact);
-    if (obj.name) fdu.append("name", obj.name);
-    if (obj.dob) fdu.append("dob", obj.dob);
-    if (obj.address) fdu.append("address", obj.address);
-    if (obj.occupation) fdu.append("occupation", obj.occupation);
+   
+const update = async () => {
+ 
+  const url = `${import.meta.env.VITE_API_URLL}/api/update`;
 
-    if (image1 instanceof File) 
-      {
-        fdu.append("image1", image1);
+  const fdu = new FormData();
+
+  if (obj.email) fdu.append("email", obj.email);
+  if (obj.contact) fdu.append("contact", obj.contact);
+  if (obj.name) fdu.append("name", obj.name);
+  if (obj.dob) fdu.append("dob", obj.dob);
+  if (obj.address) fdu.append("address", obj.address);
+  if (obj.occupation) fdu.append("occupation", obj.occupation);
+
+  if (image1 instanceof File) {
+    fdu.append("image1", image1);
+  }
+
+  if (image2 instanceof File) {
+    fdu.append("image2", image2);
+  }
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const resp = await axios.post(url, fdu, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
+    });
 
+    alert(resp.data.msg);
 
-    if (image2 instanceof File) 
-      {
-        fdu.append("image2", image2);
-      }
-
-      
-  let token = localStorage.getItem("token");
-try{
-  let resp = await axios.post(url, fdu, {  headers: {"Content-Type": "multipart/form-data",Authorization: `Bearer ${token}`,}})
-  
-  if(resp.data.status === true)
-    {
-     alert(resp.data.msg);
-    }
-  else
-    {
-      alert(resp.data.msg);
-    }  
-  }catch (err: any) {
-    //  TOKEN EXPIRED HANDLING
-    if (err.response && err.response.status === 401) {
+  } catch (err: any) {
+    if (err.response?.status === 401) {
       alert("Your session has expired. Please login again.");
       localStorage.removeItem("token");
-    
       navigate("/loginnav");
-
     } else {
+      console.error(err);
       alert("Something went wrong. Try again.");
     }
   }
-}
+};
+
   
   
 // ================================================================================================//
