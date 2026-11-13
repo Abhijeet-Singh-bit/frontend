@@ -74,8 +74,8 @@ const DonorForm = () => {
  const save = async () => {
     
   if (!validate()) return;
-
-  const url = "http://localhost:2026/api/profile";
+  let API_URL = import.meta.env.VITE_API_URL;
+  let url = '${API_URL}/api/profile';
 
   const fd = new FormData();
   if (obj.email) fd.append("email", obj.email);
@@ -123,7 +123,7 @@ const DonorForm = () => {
 
     const update = async () => { 
     // alert("Clicked");
-    const API_URL = import.meta.env.VITE_API_URL;
+    let API_URL = import.meta.env.VITE_API_URL;
     let url = '${API_URL}/api/update';
 
     const fdu = new FormData();
